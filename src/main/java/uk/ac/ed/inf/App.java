@@ -10,10 +10,8 @@ import java.net.URL;
 public class App 
 {
     public static void main( String[] args ) throws MalformedURLException {
-        URL url = new URL("https://ilp-rest.azurewebsites.net/");
-        Restaurant[] restaurants = Restaurant.getRestaurantsFromRestServer(url);
-
-        System.out.println(restaurants[0]);
+        LngLat coordinate = new LngLat(-3.186874,55.944494);
+        System.out.println(coordinate.inCentralArea());
     }
 
 }

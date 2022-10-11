@@ -19,16 +19,34 @@ public record LngLat(
         int i;
         int j;
         boolean result = false;
-        for (i=0, j= points.length-1; i< points.length; j=i++){
-            if((points[i].lng > this.lng) != (points[j].lng > this.lng) &&
-                    (this.lat <(points[j].lat-points[i].lat) * (this.lng-points[i].lng)/(points[j].lng-points[i].lng)+points[i].lat))
-            {
-                result=!result;
+        for (i = 0, j = points.length - 1; i < points.length; j = i++) {
+            if ((points[i].lat > this.lat) != (points[j].lat > this.lat) &&
+                    (this.lng < (points[j].lng - points[i].lng) * (this.lat - points[i].lat) / (points[j].lat-points[i].lat) + points[i].lng)) {
+                result = !result;
             }
         }
-
         return result;
     }
+//    boolean result = false;
+//        for (int i=0; i< points.length; i++){
+//        double x0 = points[i].lng;
+//        double y0=points[i].lat;
+//        double x1 = points[(i+1) % points.length].lng;
+//        double y1=points[(i+1) % points.length].lat;
+//        if(!((Math.min(y0,y1)<this.lat) && (this.lat<=Math.max(y0,y1)))){
+//            continue;
+//        }
+//        if(this.lng<Math.min(x0,x1)){
+//            continue;
+//        }
+//        double current_x;
+//        if(x0==x1){current_x=x0;}
+//        else{current_x = x0+((this.lat-y0)*(x1-x0)/(y1-y0));}
+//        result = this.lng<current_x;
+//
+//    }
+//
+//        return result;
 
     public double distanceTo(LngLat point){
         return Math.sqrt(((point.lng- this.lng)*(point.lng- this.lng)) + ((point.lat- this.lat)*(point.lat- this.lat)));
