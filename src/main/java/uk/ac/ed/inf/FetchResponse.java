@@ -14,6 +14,10 @@ public class FetchResponse {
         return instance;
     }
 
+    /**
+     * @param endpoint REST endpoint for fetching the associated response
+     * @return All points in the central area response as array of LngLat
+     */
     public LngLat[] getCentralArea(String endpoint){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -27,6 +31,10 @@ public class FetchResponse {
         }
     }
 
+    /**
+     * @param endpoint REST endpoint for fetching the associated response
+     * @return all orders in the orders endpoint as an array of Order class objects
+     */
     public Order[] getOrders(String endpoint){
         try {
             ObjectMapper objectMapper = new ObjectMapper();

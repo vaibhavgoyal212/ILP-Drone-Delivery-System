@@ -13,7 +13,7 @@ public class Restaurant {
     @JsonProperty("longitude")
     public double lng;
     @JsonProperty("menu")
-    private Menu[] menuItems;
+    private Menu[] menu;
     @JsonProperty("latitude")
     public double lat;
 
@@ -32,8 +32,8 @@ public class Restaurant {
         }
     }
 
-    public Menu[] getMenuItems(){
-        return this.menuItems;
+    public Menu[] getMenu(){
+        return this.menu;
     }
 
 }

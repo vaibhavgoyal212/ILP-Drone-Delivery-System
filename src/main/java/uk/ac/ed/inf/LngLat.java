@@ -11,6 +11,11 @@ public record LngLat(
 
     private static final double DIST_TOLERANCE= 0.00015;
 
+    /**
+     * Implementation of RayCasting algorithm to find if point is in a polygon
+     *
+     * @return boolean value depicting whether a point is in Central area or not
+     */
     public boolean inCentralArea(){
 
         FetchResponse response = FetchResponse.getInstance();
@@ -20,34 +25,20 @@ public record LngLat(
         int j;
         boolean result = false;
         for (i = 0, j = points.length - 1; i < points.length; j = i++) {
-            if ((points[i].lat > this.lat) != (points[j].lat > this.lat) &&
-                    (this.lng < (points[j].lng - points[i].lng) * (this.lat - points[i].lat) / (points[j].lat-points[i].lat) + points[i].lng)) {
+            if ((points[i].lat >= this.lat) != (points[j].lat >= this.lat) &&
+                    (this.lng <= (points[j].lng - points[i].lng) * (this.lat - points[i].lat) / (points[j].lat-points[i].lat) + points[i].lng)) {
                 result = !result;
             }
         }
         return result;
     }
-//    boolean result = false;
-//        for (int i=0; i< points.length; i++){
-//        double x0 = points[i].lng;
-//        double y0=points[i].lat;
-//        double x1 = points[(i+1) % points.length].lng;
-//        double y1=points[(i+1) % points.length].lat;
-//        if(!((Math.min(y0,y1)<this.lat) && (this.lat<=Math.max(y0,y1)))){
-//            continue;
-//        }
-//        if(this.lng<Math.min(x0,x1)){
-//            continue;
-//        }
-//        double current_x;
-//        if(x0==x1){current_x=x0;}
-//        else{current_x = x0+((this.lat-y0)*(x1-x0)/(y1-y0));}
-//        result = this.lng<current_x;
-//
-//    }
-//
-//        return result;
 
+
+    /**
+     * Implementation of euclidean distance between points
+     * @param point point from which to calculate distance
+     * @return double value depicting the distance
+     */
     public double distanceTo(LngLat point){
         return Math.sqrt(((point.lng- this.lng)*(point.lng- this.lng)) + ((point.lat- this.lat)*(point.lat- this.lat)));
     }
@@ -56,6 +47,11 @@ public record LngLat(
         return distanceTo(point) <= DIST_TOLERANCE;
     }
 
+    /**
+     *
+     * @param direction compass direction in which to move
+     * @return LngLat object depicting next position
+     */
     public LngLat nextPosition(Compass direction){
         double angleRad = Math.toRadians(direction.getDegreeVal());
 
