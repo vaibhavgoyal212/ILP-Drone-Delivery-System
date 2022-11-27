@@ -11,15 +11,18 @@ import static org.junit.Assert.*;
  * Unit test for simple App.
  */
 public class AppTest  {
-    URL base = new URL("https://ilp-rest.azurewebsites.net/");
+    String base ="https://ilp-rest.azurewebsites.net";
 
-    private Restaurant[] restaurants = Restaurant.getRestaurantsFromRestServer(base);
+    FetchResponse response = FetchResponse.getInstance();
 
-    public AppTest() throws MalformedURLException {
+
+    public AppTest() {
+        response.setUrl(base);
     }
 
     @Test
     public void inCentralAreaTest(){
+
         LngLat coordinate1 = new LngLat(-3.186874,55.944494); //true
         LngLat coordinate2 = new LngLat(-3.89933,56.4545324); //false
         LngLat coordinate3 = new LngLat(-3.186974,55.944494); //true
@@ -56,7 +59,8 @@ public class AppTest  {
     }
 
     @Test
-    public void getMenuTest(){
+    public void getMenuTest() throws MalformedURLException {
+        Restaurant[] restaurants = response.getRestaurants();
         for(Restaurant r: restaurants){
             assertNotNull("Menu response not fetched for Restaurant"+r , r.getMenu());
         }
@@ -64,6 +68,7 @@ public class AppTest  {
 
     @Test(expected = InvalidPizzaCombinationException.class)
     public void getDeliveryCostForWrongCombinationTest() throws InvalidPizzaCombinationException {
+        Restaurant[] restaurants = response.getRestaurants();
         Order order = new Order();
         order.getDeliveryCost(restaurants,new String[]{"Margarita", "All Shrooms"});
 
@@ -71,6 +76,7 @@ public class AppTest  {
 
     @Test
     public void getDeliveryCostForDuplicatePizzas() throws InvalidPizzaCombinationException {
+        Restaurant[] restaurants = response.getRestaurants();
         Order order = new Order();
         int cost = order.getDeliveryCost(restaurants,new String[]{"Margarita", "Margarita"});
         assertEquals(cost,2100);
@@ -78,6 +84,7 @@ public class AppTest  {
 
     @Test
     public void getDeliveryCostGenericTest() throws InvalidPizzaCombinationException {
+        Restaurant[] restaurants = response.getRestaurants();
         Order order = new Order();
         int cost = order.getDeliveryCost(restaurants,new String[]{"Super Cheese", "All Shrooms", "Super Cheese"});
         assertEquals(cost,3800);

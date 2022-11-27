@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 
 public class Restaurant {
     @JsonProperty ("name")
@@ -16,20 +17,19 @@ public class Restaurant {
     private Menu[] menu;
     @JsonProperty("latitude")
     public double lat;
+    private HashMap<String, Integer> menuMap;
+
+
 
     public Restaurant(){}
-
-    public static Restaurant[] getRestaurantsFromRestServer(URL serverBaseAddress){
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            URL url = new URL(serverBaseAddress+"restaurants");
-
-            return objectMapper.readValue(url, Restaurant[].class);
-
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public HashMap<String, Integer> getMenuMap(){
+        if(menuMap == null){
+            menuMap = new HashMap<>();
+            for(Menu item: menu){
+                menuMap.put(item.itemName, item.price);
+            }
         }
+        return menuMap;
     }
 
     public Menu[] getMenu(){

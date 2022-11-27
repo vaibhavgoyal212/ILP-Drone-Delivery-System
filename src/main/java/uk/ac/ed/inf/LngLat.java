@@ -2,6 +2,9 @@ package uk.ac.ed.inf;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @JsonIgnoreProperties("name")
 public record LngLat(
         @JsonProperty("longitude")
@@ -20,7 +23,7 @@ public record LngLat(
 
         FetchResponse response = FetchResponse.getInstance();
 
-        LngLat[] points= response.getCentralArea("centralArea");
+        LngLat[] points= response.getCentralArea();
         int i;
         int j;
         boolean result = false;
@@ -61,5 +64,7 @@ public record LngLat(
         return new LngLat(this.lng+deltaLng, this.lat+deltaLat);
 
     }
+
+
 
 }
