@@ -20,18 +20,7 @@ public class AppTest  {
         response.setUrl(base);
     }
 
-    @Test
-    public void inCentralAreaTest(){
 
-        LngLat coordinate1 = new LngLat(-3.186874,55.944494); //true
-        LngLat coordinate2 = new LngLat(-3.89933,56.4545324); //false
-        LngLat coordinate3 = new LngLat(-3.186974,55.944494); //true
-
-        assertTrue(coordinate1.inCentralArea());
-        assertFalse(coordinate2.inCentralArea());
-        assertTrue(coordinate3.inCentralArea());
-
-    }
 
     @Test
     public void closeToTest(){

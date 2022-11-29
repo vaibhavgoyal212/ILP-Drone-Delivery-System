@@ -6,17 +6,20 @@ import java.util.*;
 public class RoutePlanner {
 
     private static WorldDataStorage worldDataStorage = null;
+    private final long startTime;
 
 
     public RoutePlanner(WorldDataStorage dataStorage){
         worldDataStorage = dataStorage;
+        this.startTime = System.nanoTime();
     }
 
-    private static List<Node> getNeighbors(Node node){
+    private List<Node> getNeighbors(Node node){
         List<Node> neighbors = new ArrayList<>();
         for (Compass compass : Compass.values()){
             LngLat nextPosition = node.getPosition().nextPosition(compass);
             Node nextNode = new Node(nextPosition);
+            nextNode.setTicksSinceStartOfCalculation(this.startTime);
             nextNode.setAngle(compass.getDegreeVal());
             neighbors.add(nextNode);
         }
@@ -73,6 +76,12 @@ public class RoutePlanner {
         }
         Collections.reverse(path);
         path.get(0).setNodeAsStartNode();
+        Node end = path.get(path.size()-1);
+        Node hoverNode = new Node(end.getPosition());
+        hoverNode.setTicksSinceStartOfCalculation(this.startTime);
+        hoverNode.setParent(end);
+        hoverNode.setAngle(null);
+        path.add(hoverNode);
         return path;
     }
 

@@ -3,6 +3,9 @@ package uk.ac.ed.inf;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,7 +47,7 @@ public class writeToJSON {
             objectNode.put("angle", node.getAngle());
             objectNode.put("toLongitude", node.getPosition().lng());
             objectNode.put("toLatitude", node.getPosition().lat());
-            objectNode.put("ticksSinceStartOfCalculation", 0);
+            objectNode.put("ticksSinceStartOfCalculation", node.getTicksSinceStartOfCalculation());
             arrayNode.add(objectNode);
         }
         try{
@@ -54,7 +57,38 @@ public class writeToJSON {
         }
     }
 
-    public static void droneFile(){}
+    public static void droneGeoJSONFile(List<Node> flightpath, String date){
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode mainNode = mapper.createObjectNode();
+        mainNode.put("type", "FeatureCollection");
+        ArrayNode features = mapper.createArrayNode();
+        ObjectNode feature = mapper.createObjectNode();
+        feature.put("type", "Feature");
+        ObjectNode properties = mapper.createObjectNode();
+        ObjectNode geometry = mapper.createObjectNode();
+        geometry.put("type", "LineString");
+
+        ArrayNode coordinates = mapper.createArrayNode();
+
+        for(Node node : flightpath){
+            ArrayNode coordinate = mapper.createArrayNode();
+            coordinate.add(node.getPosition().lng());
+            coordinate.add(node.getPosition().lat());
+            coordinates.add(coordinate);
+        }
+        geometry.set("coordinates", coordinates);
+        feature.set("properties", properties);
+        feature.set("geometry", geometry);
+        features.add(feature);
+        mainNode.set("features", features);
+        try{
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new java.io.File("./drone-"+date+".geojson"), mainNode);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 
 
 

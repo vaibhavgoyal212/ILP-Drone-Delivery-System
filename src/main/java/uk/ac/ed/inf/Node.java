@@ -10,7 +10,9 @@ public class Node {
     private Node parent = null;
     private double h_distance;
 
-    private double angle;
+    private Double angle;
+
+    private long ticksSinceStartOfCalculation = 0;
 
     public Node(LngLat position){
         this.setPosition(position);
@@ -37,11 +39,11 @@ public class Node {
         return node.getPosition().equals(this.getPosition());
     }
 
-    public void setAngle(double angle){
+    public void setAngle(Double angle){
         this.angle = angle;
     }
 
-    public double getAngle(){
+    public Double getAngle(){
         return angle;
     }
 
@@ -79,5 +81,13 @@ public class Node {
 
     public void setPosition(LngLat position) {
         this.position = position;
+    }
+
+    public long getTicksSinceStartOfCalculation() {
+        return ticksSinceStartOfCalculation;
+    }
+
+    public void setTicksSinceStartOfCalculation(long startTime) {
+        this.ticksSinceStartOfCalculation = System.nanoTime() - startTime;
     }
 }

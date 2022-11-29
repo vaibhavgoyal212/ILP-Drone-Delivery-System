@@ -14,28 +14,6 @@ public record LngLat(
 
     private static final double DIST_TOLERANCE= 0.00015;
 
-    /**
-     * Implementation of RayCasting algorithm to find if point is in a polygon
-     *
-     * @return boolean value depicting whether a point is in Central area or not
-     */
-    public boolean inCentralArea(){
-
-        FetchResponse response = FetchResponse.getInstance();
-
-        LngLat[] points= response.getCentralArea();
-        int i;
-        int j;
-        boolean result = false;
-        for (i = 0, j = points.length - 1; i < points.length; j = i++) {
-            if ((points[i].lat >= this.lat) != (points[j].lat >= this.lat) &&
-                    (this.lng <= (points[j].lng - points[i].lng) * (this.lat - points[i].lat) / (points[j].lat-points[i].lat) + points[i].lng)) {
-                result = !result;
-            }
-        }
-        return result;
-    }
-
 
     /**
      * Implementation of euclidean distance between points

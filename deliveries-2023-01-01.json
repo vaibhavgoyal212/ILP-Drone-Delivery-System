@@ -28,7 +28,7 @@
   "costInPence" : 3900
 }, {
   "orderNo" : "7157DF75",
-  "outcome" : "VALIDBUTNOTDELIVERED",
+  "outcome" : "DELIVERED",
   "costInPence" : 2500
 }, {
   "orderNo" : "5002C4EA",
@@ -48,7 +48,7 @@
   "costInPence" : 2500
 }, {
   "orderNo" : "1BF3A7A6",
-  "outcome" : "DELIVERED",
+  "outcome" : "VALIDBUTNOTDELIVERED",
   "costInPence" : 2600
 }, {
   "orderNo" : "160204B7",
@@ -56,7 +56,7 @@
   "costInPence" : 2400
 }, {
   "orderNo" : "78192B5E",
-  "outcome" : "VALIDBUTNOTDELIVERED",
+  "outcome" : "DELIVERED",
   "costInPence" : 2400
 }, {
   "orderNo" : "434C72A9",
@@ -72,7 +72,7 @@
   "costInPence" : 2400
 }, {
   "orderNo" : "4774A688",
-  "outcome" : "DELIVERED",
+  "outcome" : "VALIDBUTNOTDELIVERED",
   "costInPence" : 2400
 }, {
   "orderNo" : "11D619F4",
@@ -88,7 +88,7 @@
   "costInPence" : 2400
 }, {
   "orderNo" : "09131BDB",
-  "outcome" : "VALIDBUTNOTDELIVERED",
+  "outcome" : "DELIVERED",
   "costInPence" : 2400
 }, {
   "orderNo" : "4776DBB1",
@@ -112,7 +112,7 @@
   "costInPence" : 2500
 }, {
   "orderNo" : "2E665DC0",
-  "outcome" : "DELIVERED",
+  "outcome" : "VALIDBUTNOTDELIVERED",
   "costInPence" : 2600
 }, {
   "orderNo" : "7B0DBC3E",
@@ -152,7 +152,7 @@
   "costInPence" : 2400
 }, {
   "orderNo" : "74310CC2",
-  "outcome" : "VALIDBUTNOTDELIVERED",
+  "outcome" : "DELIVERED",
   "costInPence" : 2400
 }, {
   "orderNo" : "72351691",
@@ -168,7 +168,7 @@
   "costInPence" : 2400
 }, {
   "orderNo" : "0B66A89A",
-  "outcome" : "VALIDBUTNOTDELIVERED",
+  "outcome" : "DELIVERED",
   "costInPence" : 2400
 }, {
   "orderNo" : "14A4FB63",

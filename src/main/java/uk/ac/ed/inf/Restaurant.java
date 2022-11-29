@@ -43,7 +43,7 @@ public class Restaurant {
     }
 
     public void setMovesToDeliver(int moves){
-        this.movesToDeliver = moves + 1;
+        this.movesToDeliver = moves;
     }
 
 }

@@ -22,7 +22,7 @@ public class Drone {
     }
 
     public void deliverOrders(String date){
-        int validOrders = 0;
+        int deliveredOrders = 0;
         int undeliverableOrders = 0;
         int movesMade = 0;
         List<Order> orders = dataStorage.getValidOrders(date);
@@ -33,7 +33,9 @@ public class Drone {
         }
         PriorityQueue<Order> orderQueue = new PriorityQueue<>(Comparator.comparing(o -> o.restaurant.movesToDeliver));
         orderQueue.addAll(orders);
-        for(Order order : orderQueue){
+        int totalOrders = orderQueue.size();
+        while(!orderQueue.isEmpty()){
+            Order order = orderQueue.poll();
             List<Node> appletonToRestaurant = routePlanner.search(appletonTower, order.restaurant.getLngLat());
             List<Node> restaurantToAppleton = routePlanner.search(appletonToRestaurant.get(appletonToRestaurant.size() - 1).getPosition(), appletonTower);
             List<Node> totalPath = Stream.concat(appletonToRestaurant.stream(), restaurantToAppleton.stream()).toList();
@@ -45,7 +47,7 @@ public class Drone {
                 totalFlightPath.addAll(totalPath);
 
                 order.setOutcome(OrderOutcome.DELIVERED);
-                validOrders++;
+                deliveredOrders++;
 
             }
             else{
@@ -55,8 +57,8 @@ public class Drone {
 
 
         }
-        System.out.println("Number of orders: " + orderQueue.size());
-        System.out.println("Number of valid orders: " + validOrders);
+        System.out.println("Number of orders: " + totalOrders);
+        System.out.println("Number of delivered orders: " + deliveredOrders);
         System.out.println("Number of undeliverable orders: " + undeliverableOrders);
         System.out.println("Number of moves made: " + movesMade);
 
@@ -65,6 +67,7 @@ public class Drone {
     public void createFile(String date){
         writeToJSON.deliveriesFiles(dataStorage.getOrdersByDate(date), date);
         writeToJSON.flightPathFiles(totalFlightPath, date);
+        writeToJSON.droneGeoJSONFile(totalFlightPath, date);
     }
 
     public List<Node> getTotalFlightPath(){
