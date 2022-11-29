@@ -66,8 +66,8 @@ public class AppTest  {
         }
     }
 
-    @Test(expected = InvalidPizzaCombinationException.class)
-    public void getDeliveryCostForWrongCombinationTest() throws InvalidPizzaCombinationException {
+    @Test
+    public void getDeliveryCostForWrongCombinationTest()  {
         Restaurant[] restaurants = response.getRestaurants();
         Order order = new Order();
         order.getDeliveryCost(restaurants,new String[]{"Margarita", "All Shrooms"});
@@ -75,7 +75,7 @@ public class AppTest  {
     }
 
     @Test
-    public void getDeliveryCostForDuplicatePizzas() throws InvalidPizzaCombinationException {
+    public void getDeliveryCostForDuplicatePizzas()  {
         Restaurant[] restaurants = response.getRestaurants();
         Order order = new Order();
         int cost = order.getDeliveryCost(restaurants,new String[]{"Margarita", "Margarita"});
@@ -83,7 +83,7 @@ public class AppTest  {
     }
 
     @Test
-    public void getDeliveryCostGenericTest() throws InvalidPizzaCombinationException {
+    public void getDeliveryCostGenericTest() {
         Restaurant[] restaurants = response.getRestaurants();
         Order order = new Order();
         int cost = order.getDeliveryCost(restaurants,new String[]{"Super Cheese", "All Shrooms", "Super Cheese"});

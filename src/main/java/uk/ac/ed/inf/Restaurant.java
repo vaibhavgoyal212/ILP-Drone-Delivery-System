@@ -19,6 +19,8 @@ public class Restaurant {
     public double lat;
     private HashMap<String, Integer> menuMap;
 
+    public int movesToDeliver = 0;
+
 
 
     public Restaurant(){}
@@ -34,6 +36,14 @@ public class Restaurant {
 
     public Menu[] getMenu(){
         return this.menu;
+    }
+
+    public LngLat getLngLat(){
+        return new LngLat(lng, lat);
+    }
+
+    public void setMovesToDeliver(int moves){
+        this.movesToDeliver = moves + 1;
     }
 
 }

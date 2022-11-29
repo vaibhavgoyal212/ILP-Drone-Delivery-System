@@ -3,54 +3,59 @@ package uk.ac.ed.inf;
 import java.awt.geom.Line2D;
 import java.util.*;
 
-public class AStarSearch {
-    private static final double DIST_PER_MOVE= 0.00015;
-    private static final int MAX_MOVES=2000;
-    private static final LngLat appletonTower = new LngLat(-3.186874, 55.944494);
+public class RoutePlanner {
+
     private static WorldDataStorage worldDataStorage = null;
 
 
-    public AStarSearch(WorldDataStorage dataStorage){
+    public RoutePlanner(WorldDataStorage dataStorage){
         worldDataStorage = dataStorage;
     }
 
-    public List<Node> getNeighbors(Node node){
+    private static List<Node> getNeighbors(Node node){
         List<Node> neighbors = new ArrayList<>();
         for (Compass compass : Compass.values()){
-            LngLat nextPosition = node.position.nextPosition(compass);
-            neighbors.add(new Node(nextPosition));
+            LngLat nextPosition = node.getPosition().nextPosition(compass);
+            Node nextNode = new Node(nextPosition);
+            nextNode.setAngle(compass.getDegreeVal());
+            neighbors.add(nextNode);
         }
         return neighbors;
     }
 
-    public List<LngLat> search(LngLat start, LngLat goal){
+    public List<Node> search(LngLat start, LngLat goal){
 
         PriorityQueue<Node> openList = new PriorityQueue<>(Comparator.comparing(o -> o.calculateH(goal)));
         ArrayList<Node> closedList = new ArrayList<>();
         Node startNode = new Node(start);
         Node goalNode = new Node(goal);
         openList.add(startNode);
-        boolean found = false;
         while(!openList.isEmpty()){
+            boolean centralAreaCrossed = false;
             Node currentNode = openList.poll();
             closedList.add(currentNode);
-            if(currentNode.position.closeTo(goalNode.position)){
+            if(currentNode.getPosition().closeTo(goalNode.getPosition())){
                 return printPath(currentNode);
             }
             List<Node> neighbors = getNeighbors(currentNode);
             for(Node neighbour:neighbors){
-                if(crossesNoFlyZone(currentNode.position, neighbour.position)){
+                boolean centralAreaStatus=crossesCentralArea(currentNode.getPosition(), neighbour.getPosition());
+                if(centralAreaStatus && !centralAreaCrossed){
+                    centralAreaCrossed = true;
+                }
+                else if(centralAreaCrossed && centralAreaStatus){
                     continue;
                 }
-                if(closedList.contains(neighbour) || neighbour.calculateH(goalNode.position) >= currentNode.calculateH(goalNode.position)){
+                if(crossesNoFlyZone(currentNode.getPosition(), neighbour.getPosition())){
                     continue;
                 }
-                neighbour.setH_distance(neighbour.calculateH(goalNode.position));
-                neighbour.parent = currentNode;
+                neighbour.setH_distance(neighbour.calculateH(goalNode.getPosition()));
+                neighbour.setParent(currentNode);
                 if(!closedList.contains(neighbour)){
                     openList.add(neighbour);
                 }
-                else if(closedList.get(closedList.indexOf(neighbour)).calculateH(goalNode.position) > neighbour.calculateH(goalNode.position)){
+                else if(closedList.get(closedList.indexOf(neighbour)).calculateH(goalNode.getPosition()) > neighbour.calculateH(goalNode.getPosition())){
+                    closedList.remove(neighbour);
                     openList.add(neighbour);
                 }
             }
@@ -59,14 +64,15 @@ public class AStarSearch {
         return null;
     }
 
-    public List<LngLat> printPath(Node goal){
-        List<LngLat> path = new ArrayList<>();
+    public List<Node> printPath(Node goal){
+        List<Node> path = new ArrayList<>();
         Node current = goal;
         while(current != null){
-            path.add(current.position);
-            current = current.parent;
+            path.add(current);
+            current = current.getParent();
         }
         Collections.reverse(path);
+        path.get(0).setNodeAsStartNode();
         return path;
     }
 
@@ -84,6 +90,16 @@ public class AStarSearch {
                 if(segmentsIntersect(start, end, noFlyZone.getCoordinates()[i], noFlyZone.getCoordinates()[i+1])){
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    public static boolean crossesCentralArea(LngLat start, LngLat end){
+        LngLat[] centralArea = worldDataStorage.getCentralAreaPoints();
+        for(int i = 0; i < centralArea.length - 1; i++){
+            if(segmentsIntersect(start, end, centralArea[i], centralArea[i+1])){
+                return true;
             }
         }
         return false;

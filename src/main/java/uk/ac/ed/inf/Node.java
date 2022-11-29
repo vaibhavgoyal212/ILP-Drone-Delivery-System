@@ -1,32 +1,27 @@
 package uk.ac.ed.inf;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Node {
+    private String orderNo;
 
-    public LngLat position;
-    public Node parent = null;
-    //public int g;
-    public double h_distance;
-    //public double f_total;
+    private boolean isStartNode = false;
+
+    private LngLat position;
+    private Node parent = null;
+    private double h_distance;
+
+    private double angle;
 
     public Node(LngLat position){
-        this.position = position;
+        this.setPosition(position);
         }
 
-
-
     public double calculateH(LngLat goal){
-        return position.distanceTo(goal);
+        return getPosition().distanceTo(goal);
     }
 
     public void setH_distance(double h_distance) {
         this.h_distance = h_distance;
-    }
-
-    public double getF(){
-        return this.h_distance;
     }
 
 
@@ -39,7 +34,50 @@ public class Node {
             return false;
         }
         Node node = (Node) o;
-        return node.position.equals(this.position);
+        return node.getPosition().equals(this.getPosition());
     }
 
+    public void setAngle(double angle){
+        this.angle = angle;
+    }
+
+    public double getAngle(){
+        return angle;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public void setNodeAsStartNode() {
+        isStartNode = true;
+    }
+
+    public boolean isStartNode() {
+        return isStartNode;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
+
+    public double getH_distance() {
+        return h_distance;
+    }
+
+    public LngLat getPosition() {
+        return position;
+    }
+
+    public void setPosition(LngLat position) {
+        this.position = position;
+    }
 }

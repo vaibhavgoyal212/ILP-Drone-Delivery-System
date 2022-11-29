@@ -25,7 +25,7 @@ public class Order {
     @JsonProperty("orderItems")
     public String[] orderItems;
 
-    public OrderOutcome outcome;
+    private OrderOutcome outcome = OrderOutcome.INVALID;
     public Restaurant restaurant=null;
 
     public Order(){}
@@ -46,14 +46,13 @@ public class Order {
      * @param restaurants array of all participating restaurants
      * @param pizzas combination of pizzas for which to calculate delivery cost
      * @return integer value depicting total cost of delivering the given combination of pizzas
-     * @throws InvalidPizzaCombinationException if the combination of pizzas entered don't belong to any restaurant menu
      */
-    public int getDeliveryCost(Restaurant[] restaurants, String[] pizzas) throws InvalidPizzaCombinationException {
+    public int getDeliveryCost(Restaurant[] restaurants, String[] pizzas) {
         if(invalidCombination(restaurants, pizzas)){
             return getOrderedPizzasCost(this.restaurant,pizzas)+100;
         }
         else{
-            throw new InvalidPizzaCombinationException("the combination of pizzas entered don't belong to any restaurant menu");
+            return 0;
         }
     }
 
@@ -85,7 +84,7 @@ public class Order {
     }
 
     private boolean checkCreditCardNumber(String creditCardNumber){
-        if(creditCardNumber.length()>16 || creditCardNumber.length()<13 || creditCardNumber.isBlank() || creditCardNumber.contains(" ")) {
+        if(creditCardNumber.length()!=16 || creditCardNumber.isBlank() || creditCardNumber.contains(" ")) {
             return false;
         }
         int sum = 0;
@@ -185,6 +184,14 @@ public class Order {
 
         return true;
     }
+
+    public void setOutcome(OrderOutcome outcome) {
+        this.outcome = outcome;
+    }
+    public OrderOutcome getOutcome() {
+        return outcome;
+    }
+
 
 
 
