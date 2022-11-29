@@ -2,8 +2,6 @@ package uk.ac.ed.inf;
 import com. fasterxml . jackson . databind . ObjectMapper ;
 import java . io . IOException ;
 import java . net .URL;
-import java.util.List;
-import java.util.Map;
 
 public class FetchResponse {
     private static FetchResponse instance;
@@ -54,6 +52,10 @@ public class FetchResponse {
     }
 
 
+    /**
+     *
+     * @return all restaurants in the restaurants endpoint as an array of Restaurant class objects
+     */
     public Restaurant[] getRestaurants() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -65,6 +67,10 @@ public class FetchResponse {
         }
     }
 
+    /**
+     *
+     * @return all noFlyZones in the noFlyZones endpoint as an array of NoFlyZone class objects
+     */
     public NoFlyZone[] getNoFlyZones() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

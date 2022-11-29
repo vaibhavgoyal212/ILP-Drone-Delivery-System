@@ -1,8 +1,5 @@
 package uk.ac.ed.inf;
 
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Stream;
 
 /**
  * Hello world!
@@ -18,10 +15,6 @@ public class App {
         }
         String date = args[0];
         String baseURL = args[1];
-        if(!baseURL.equals("https://ilp-rest.azurewebsites.net")){
-            System.out.println("Invalid URL");
-            throw new IllegalArgumentException();
-            }
         System.out.println("Starting drone delivery for date: " + date);
 
         FetchResponse response = FetchResponse.getInstance();

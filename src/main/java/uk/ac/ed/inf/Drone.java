@@ -66,14 +66,12 @@ public class Drone {
 
     public void createFile(String date){
         writeToJSON.deliveriesFiles(dataStorage.getOrdersByDate(date), date);
+        //System.out.println("deliveries file created");
         writeToJSON.flightPathFiles(totalFlightPath, date);
+        //System.out.println("flight path file created");
         writeToJSON.droneGeoJSONFile(totalFlightPath, date);
+        //System.out.println("drone geoJSON file created");
     }
-
-    public List<Node> getTotalFlightPath(){
-        return totalFlightPath;
-    }
-
 
 
 }

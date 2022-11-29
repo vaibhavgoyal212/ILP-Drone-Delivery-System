@@ -2,10 +2,6 @@ package uk.ac.ed.inf;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 
 public class Restaurant {
