@@ -11,6 +11,11 @@ public class writeToJSON {
 
     public writeToJSON(){}
 
+    /**
+     * method to write details of all orders to a JSON file
+     * @param orders list of all orders on a given day
+     * @param date date of the orders
+     */
     public static void deliveriesFiles(Order[] orders, String date){
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -30,6 +35,11 @@ public class writeToJSON {
 
     }
 
+    /**
+     * method to write the details of each move in the flightpath taken by the drone on a particular date to a JSON file
+     * @param flightPath the flightpath taken by the drone on a particular date
+     * @param date date of the flightpath
+     */
     public static void flightPathFiles(List<Node> flightPath, String date){
         ObjectMapper mapper =  new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -54,6 +64,11 @@ public class writeToJSON {
         }
     }
 
+    /**
+     * method to write the drone's flightpath to a geoJSON file
+     * @param flightpath the flightpath taken by the drone on a particular date
+     * @param date date of the flightpath
+     */
     public static void droneGeoJSONFile(List<Node> flightpath, String date){
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode mainNode = mapper.createObjectNode();

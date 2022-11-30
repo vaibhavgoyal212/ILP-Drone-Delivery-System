@@ -13,10 +13,18 @@ public class NoFlyZone {
 
     public NoFlyZone(){}
 
+    /**
+     * getter for the name associated with a no-fly zone
+     * @return the name of the no-fly zone
+     */
     public String getName(){
         return this.name;
     }
 
+    /**
+     * getter for the coordinates associated with a no-fly zone
+     * @return the coordinates of the no-fly zone as a list of LngLat objects
+     */
     public LngLat[] getCoordinates(){
         LngLat[] lngLatArray = new LngLat[coordinates.size()];
         for(double[] coordinate: coordinates){

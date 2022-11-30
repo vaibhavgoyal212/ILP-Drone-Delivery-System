@@ -25,27 +25,43 @@ public class Order {
     @JsonProperty("orderItems")
     public String[] orderItems;
 
+    /**
+     * This field stores the outcome of the order.
+     * The outcome is initialised to INVALID but is overwritten depending on further evaluation.
+     */
     private OrderOutcome outcome = OrderOutcome.INVALID;
+
+    /**
+     * This field stores the restaurant that the order belongs to
+     */
     public Restaurant restaurant=null;
 
     public Order(){}
 
+    /**
+     * this method returns whether the combination of pizzas in the order is valid or not
+     * this method will also set the restaurant field of the order if the combination is valid
+     * combination of pizzas is valid if all the pizzas in the order are from the same restaurant
+     * @param restaurants list of all restaurants
+     * @param pizzas list of all pizzas in an order
+     * @return true if the combination of pizzas is valid, false otherwise
+     */
     public boolean invalidCombination(Restaurant[] restaurants, String[] pizzas) {
-        boolean check = false;
+
         for(Restaurant restaurant: restaurants){
             if(checkCombination(restaurant, pizzas)){
                 this.restaurant = restaurant;
-                check = true;
+                return true;
             }
         }
-        return check;
+        return false;
     }
 
 
     /**
      * @param restaurants array of all participating restaurants
      * @param pizzas combination of pizzas for which to calculate delivery cost
-     * @return integer value depicting total cost of delivering the given combination of pizzas
+     * @return integer value depicting total cost of delivering the given combination of pizzas(including delivery cost)
      */
     public int getDeliveryCost(Restaurant[] restaurants, String[] pizzas) {
         if(invalidCombination(restaurants, pizzas)){
@@ -83,6 +99,12 @@ public class Order {
         return cost;
     }
 
+    /**
+     * this method checks if the credit card number is valid or not
+     * employes Luhn's algorithm to check if the credit card number is valid
+     * @param creditCardNumber credit card number associated with the order
+     * @return true if the credit card number is valid, false otherwise
+     */
     private boolean checkCreditCardNumber(String creditCardNumber){
         if(creditCardNumber.length()!=16 || creditCardNumber.isBlank() || creditCardNumber.contains(" ")) {
             return false;
@@ -106,6 +128,13 @@ public class Order {
         return (sum % 10 == 0);
     }
 
+    /**
+     * this method checks if the credit card expiry date is valid or not
+     * method initially matches the date to a regular expression
+     * if the date matches the regular expression, it checks if the order date is after the expiry date or not
+     * @param cardDate credit card expiry date associated with the order
+     * @return true if the credit card expiry date is valid, false otherwise
+     */
     private boolean checkCardDate(String cardDate){
         if(cardDate.length()!=5 || cardDate.isBlank() || !cardDate.matches("([0-9]{2})/([0-9]{2})")){
             return false;
@@ -122,10 +151,22 @@ public class Order {
         return !orderDate.isAfter(expiry);
     }
 
+    /**
+     * this method checks if the cvv is valid or not
+     * valid cvv is a 3-digit number and not blank
+     * @param cvv cvv associated with the order
+     * @return true if the cvv is valid, false otherwise
+     */
     private boolean checkCVV(String cvv){
-        return (cvv.length() == 3) && !cvv.isBlank();
+        return (cvv.length() == 3) && !cvv.isBlank() && !cvv.contains(" ");
     }
 
+    /**
+     * this method checks if all the pizzas in an order exist
+     * @param restaurants array of all participating restaurants
+     * @param pizzas combination of pizzas in an order
+     * @return true if all the pizzas exist, false if any of the pizzas does not exist for any restaurant
+     */
     private boolean pizzaValidity(Restaurant[] restaurants, String[] pizzas){
         List<String> pizzasList = Arrays.asList(pizzas);
         List<String> allPizzas = new ArrayList<>();
@@ -136,23 +177,39 @@ public class Order {
 
     }
 
+    /**
+     * this method checks the constraints on the number of pizzas in an order
+     * number of pizzas can't be less than 1 or more than 4
+     * @param pizzas combination of pizzas in an order
+     * @return true if the number of pizzas is valid, false otherwise
+     */
     private boolean validPizzaCount(String[] pizzas){
         return pizzas.length<=4 && pizzas.length>=1;
     }
 
+    /**
+     * this method checks if the total cost associated with the order is equal to the sum of cost of pizzas and delivery cost
+     * @return true if the total cost is valid, false otherwise
+     */
     private boolean validTotalPrice(){
         return this.priceTotalInPence==getOrderedPizzasCost(this.restaurant, this.orderItems)+100;
     }
 
-    public boolean isOrderValid(Restaurant[] restaurants, String[] pizzas){
-        boolean res = invalidCombination(restaurants, pizzas);
+    /**
+     * this method checks all the above conditions and returns true if all the conditions are satisfied
+     * this method also sets the outcome of the order depending on the conditions
+     * @param restaurants array of all participating restaurants
+     * @return true if all the conditions are satisfied, false otherwise
+     */
+    public boolean isOrderValid(Restaurant[] restaurants){
+        boolean res = invalidCombination(restaurants, this.orderItems);
 
         if(!res){
-            if(!pizzaValidity(restaurants, pizzas)){
+            if(!pizzaValidity(restaurants, this.orderItems)){
                 this.outcome = OrderOutcome.INVALIDPIZZANOTDEFINED;
                 return false;
             }
-            if(!invalidCombination(restaurants, pizzas)){
+            if(!invalidCombination(restaurants, this.orderItems)){
                 this.outcome = OrderOutcome.INVALIDPIZZACOMBINATIONMULTIPLESUPPLIERS;
                 return false;
             }
@@ -176,18 +233,25 @@ public class Order {
             return false;
         }
 
-        if(!validPizzaCount(pizzas)){
+        if(!validPizzaCount(this.orderItems)){
             this.outcome = OrderOutcome.INVALIDPIZZACOUNT;
             return false;
         }
-
-
         return true;
     }
 
+    /**
+     * setter for the outcome of the order
+     * @param outcome outcome of the order to be set
+     */
     public void setOutcome(OrderOutcome outcome) {
         this.outcome = outcome;
     }
+
+    /**
+     * getter for the outcome of the order
+     * @return outcome of the order
+     */
     public OrderOutcome getOutcome() {
         return outcome;
     }
