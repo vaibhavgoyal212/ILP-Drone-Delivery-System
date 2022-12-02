@@ -19,11 +19,10 @@ public class WorldDataStorage {
      * it fetches the data from the server using the FetchResponse class and stores it in the respective fields.
      */
     private static void initialise(){
-        FetchResponse response = FetchResponse.getInstance();
-        restaurants = response.getRestaurants();
-        noFlyZones = response.getNoFlyZones();
-        orders = response.getOrders();
-        centralAreaPoints = response.getCentralArea();
+        restaurants = FetchResponse.getRestaurants();
+        noFlyZones = FetchResponse.getNoFlyZones();
+        orders = FetchResponse.getOrders();
+        centralAreaPoints = FetchResponse.getCentralArea();
     }
 
     /**

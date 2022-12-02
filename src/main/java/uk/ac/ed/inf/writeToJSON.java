@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,25 +41,25 @@ public class writeToJSON {
      * @param flightPath the flightpath taken by the drone on a particular date
      * @param date date of the flightpath
      */
-    public static void flightPathFiles(List<Node> flightPath, String date){
+    public static void flightPathFiles(List<DroneMove> flightPath, String date){
         ObjectMapper mapper =  new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
-        for(Node node : flightPath){
-            if(node.isStartNode()){
+        for(DroneMove move : flightPath){
+            if(move.isStartMove()){
                 continue;
             }
             ObjectNode objectNode = mapper.createObjectNode();
-            objectNode.put("orderNo", node.getOrderNo());
-            objectNode.put("fromLongitude", node.getParent().getPosition().lng());
-            objectNode.put("fromLatitude", node.getParent().getPosition().lat());
-            objectNode.put("angle", node.getAngle());
-            objectNode.put("toLongitude", node.getPosition().lng());
-            objectNode.put("toLatitude", node.getPosition().lat());
-            objectNode.put("ticksSinceStartOfCalculation", node.getTicksSinceStartOfCalculation());
+            objectNode.put("orderNo", move.getOrderNo());
+            objectNode.put("fromLongitude", move.getParent().lng());
+            objectNode.put("fromLatitude", move.getParent().lat());
+            objectNode.put("angle", move.getAngle());
+            objectNode.put("toLongitude", move.getPosition().lng());
+            objectNode.put("toLatitude", move.getPosition().lat());
+            objectNode.put("ticksSinceStartOfCalculation", move.getTicksSinceStartOfCalculation());
             arrayNode.add(objectNode);
         }
         try{
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new java.io.File("./flightpath-"+date+".json"), arrayNode);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("./flightpath-"+date+".json"), arrayNode);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,7 +70,7 @@ public class writeToJSON {
      * @param flightpath the flightpath taken by the drone on a particular date
      * @param date date of the flightpath
      */
-    public static void droneGeoJSONFile(List<Node> flightpath, String date){
+    public static void droneGeoJSONFile(List<DroneMove> flightpath, String date){
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode mainNode = mapper.createObjectNode();
         mainNode.put("type", "FeatureCollection");
@@ -82,10 +83,10 @@ public class writeToJSON {
 
         ArrayNode coordinates = mapper.createArrayNode();
 
-        for(Node node : flightpath){
+        for(DroneMove move : flightpath){
             ArrayNode coordinate = mapper.createArrayNode();
-            coordinate.add(node.getPosition().lng());
-            coordinate.add(node.getPosition().lat());
+            coordinate.add(move.getPosition().lng());
+            coordinate.add(move.getPosition().lat());
             coordinates.add(coordinate);
         }
         geometry.set("coordinates", coordinates);

@@ -35,7 +35,7 @@ public class RoutePlanner {
         return neighbors;
     }
 
-    public List<Node> search(LngLat start, LngLat goal){
+    public List<DroneMove> search(LngLat start, LngLat goal){
 
         PriorityQueue<Node> openList = new PriorityQueue<>(Comparator.comparing(o -> o.calculateH(goal)));
         ArrayList<Node> closedList = new ArrayList<>();
@@ -47,7 +47,7 @@ public class RoutePlanner {
             Node currentNode = openList.poll();
             closedList.add(currentNode);
             if(currentNode.getPosition().closeTo(goalNode.getPosition())){
-                return printPath(currentNode);
+                return getPath(currentNode);
             }
             List<Node> neighbors = getNeighbors(currentNode);
             for(Node neighbour:neighbors){
@@ -83,21 +83,22 @@ public class RoutePlanner {
      * @param goal the goal node
      * @return a list of nodes in the shortest path from start to goal
      */
-    public List<Node> printPath(Node goal){
-        List<Node> path = new ArrayList<>();
+    public List<DroneMove> getPath(Node goal){
+        List<DroneMove> path = new ArrayList<>();
         Node current = goal;
         while(current != null){
-            path.add(current);
+            path.add(new DroneMove(current));
             current = current.getParent();
         }
         Collections.reverse(path);
-        path.get(0).setNodeAsStartNode();
-        Node end = path.get(path.size()-1);
+        path.get(0).setStartMove();
+        DroneMove end = path.get(path.size()-1);
         Node hoverNode = new Node(end.getPosition());
-        hoverNode.setTicksSinceStartOfCalculation(this.startTime);
-        hoverNode.setParent(end);
+        DroneMove hover = new DroneMove(hoverNode);
+        hover.setTicksSinceStartOfCalculation(this.startTime);
+        hover.setParent(end.getPosition());
         hoverNode.setAngle(null);
-        path.add(hoverNode);
+        path.add(hover);
         return path;
     }
 

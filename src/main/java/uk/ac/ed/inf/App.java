@@ -12,8 +12,7 @@ public class App {
         String baseURL = args[1];
         System.out.println("Starting drone delivery for date: " + date);
 
-        FetchResponse response = FetchResponse.getInstance();
-        response.setUrl(baseURL);
+        FetchResponse.setUrl(baseURL);
         WorldDataStorage storage = new WorldDataStorage();
         System.out.println("storage set");
         Drone drone = new Drone(storage);

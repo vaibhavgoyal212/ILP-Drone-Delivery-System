@@ -25,7 +25,7 @@ public class Drone {
     /**
      * Field to hold the entire flightpath for a day of the drone
      */
-    private static List<Node> totalFlightPath = new ArrayList<>();
+    private static final List<DroneMove> totalFlightPath = new ArrayList<>();
 
 
     public Drone(WorldDataStorage storage){
@@ -55,10 +55,10 @@ public class Drone {
         int totalOrders = orderQueue.size();
         while(!orderQueue.isEmpty()){
             Order order = orderQueue.poll();
-            List<Node> appletonToRestaurant = routePlanner.search(appletonTower, order.restaurant.getLngLat());
-            List<Node> restaurantToAppleton = routePlanner.search(appletonToRestaurant.get(appletonToRestaurant.size() - 1).getPosition(), appletonTower);
-            List<Node> totalPath = Stream.concat(appletonToRestaurant.stream(), restaurantToAppleton.stream()).toList();
-            totalPath.forEach(node -> node.setOrderNo(order.orderNo));
+            List<DroneMove> appletonToRestaurant = routePlanner.search(appletonTower, order.restaurant.getLngLat());
+            List<DroneMove> restaurantToAppleton = routePlanner.search(appletonToRestaurant.get(appletonToRestaurant.size() - 1).getPosition(), appletonTower);
+            List<DroneMove> totalPath = Stream.concat(appletonToRestaurant.stream(), restaurantToAppleton.stream()).toList();
+            totalPath.forEach(droneMove -> droneMove.setOrderNo(order.orderNo));
 
 
             if((appletonToRestaurant.size()+restaurantToAppleton.size() + movesMade) < MAX_MOVES){

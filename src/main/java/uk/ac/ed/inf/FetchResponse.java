@@ -4,27 +4,22 @@ import java . io . IOException ;
 import java . net .URL;
 
 public class FetchResponse {
-    private static FetchResponse instance;
-
+    /**
+     * This field stores the base URL of the API
+     * the base url is combined with the REST endpoint in order to make a request to the API and retrieve the data
+     */
     private static String baseURL;
 
     private FetchResponse(){}
 
-    public void setUrl(String url){
+    public static void setUrl(String url){
         baseURL = url;
-    }
-
-    public static FetchResponse getInstance(){
-        if(instance == null){
-            instance = new FetchResponse();
-        }
-        return instance;
     }
 
     /**
      * @return All points in the central area response as array of LngLat
      */
-    public LngLat[] getCentralArea(){
+    public static LngLat[] getCentralArea(){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             URL url = new URL(baseURL+ "/centralArea" );
@@ -40,7 +35,7 @@ public class FetchResponse {
     /**
      * @return all orders in the orders endpoint as an array of Order class objects
      */
-    public Order[] getOrders(){
+    public static Order[] getOrders(){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             URL url = new URL(baseURL+"/orders");
@@ -56,7 +51,7 @@ public class FetchResponse {
      *
      * @return all restaurants in the restaurants endpoint as an array of Restaurant class objects
      */
-    public Restaurant[] getRestaurants() {
+    public static Restaurant[] getRestaurants() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             URL url = new URL(baseURL + "/restaurants");
@@ -71,7 +66,7 @@ public class FetchResponse {
      *
      * @return all noFlyZones in the noFlyZones endpoint as an array of NoFlyZone class objects
      */
-    public NoFlyZone[] getNoFlyZones() {
+    public static NoFlyZone[] getNoFlyZones() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             URL url = new URL(baseURL + "/noFlyZones");

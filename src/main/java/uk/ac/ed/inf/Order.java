@@ -59,20 +59,6 @@ public class Order {
 
 
     /**
-     * @param restaurants array of all participating restaurants
-     * @param pizzas combination of pizzas for which to calculate delivery cost
-     * @return integer value depicting total cost of delivering the given combination of pizzas(including delivery cost)
-     */
-    public int getDeliveryCost(Restaurant[] restaurants, String[] pizzas) {
-        if(invalidCombination(restaurants, pizzas)){
-            return getOrderedPizzasCost(this.restaurant,pizzas)+100;
-        }
-        else{
-            return 0;
-        }
-    }
-
-    /**
      * this is a helper function to check if the combination of pizzas exists for a restaurant
      * @param restaurant Restaurant for which to check
      * @param pizzas the combination of pizzas
@@ -204,16 +190,14 @@ public class Order {
     public boolean isOrderValid(Restaurant[] restaurants){
         boolean res = invalidCombination(restaurants, this.orderItems);
 
-        if(!res){
-            if(!pizzaValidity(restaurants, this.orderItems)){
-                this.outcome = OrderOutcome.INVALIDPIZZANOTDEFINED;
-                return false;
-            }
-            if(!invalidCombination(restaurants, this.orderItems)){
-                this.outcome = OrderOutcome.INVALIDPIZZACOMBINATIONMULTIPLESUPPLIERS;
-                return false;
-            }
 
+        if(!pizzaValidity(restaurants, this.orderItems)){
+            this.outcome = OrderOutcome.INVALIDPIZZANOTDEFINED;
+            return false;
+        }
+        if(!invalidCombination(restaurants, this.orderItems)){
+            this.outcome = OrderOutcome.INVALIDPIZZACOMBINATIONMULTIPLESUPPLIERS;
+            return false;
         }
 
         if(!checkCreditCardNumber(this.creditCardNumber)){
