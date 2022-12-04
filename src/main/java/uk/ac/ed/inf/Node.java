@@ -2,7 +2,7 @@ package uk.ac.ed.inf;
 
 
 public class Node {
-    private String orderNo;
+
 
     /**
      * this field stores whether a node is a start node.
@@ -90,30 +90,6 @@ public class Node {
         return angle;
     }
 
-    /**
-     * getter for the orderNo field
-     * @return the orderNo of the node
-     */
-
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    /**
-     * setter for the orderNo field
-     * @param orderNo the orderNo to be set
-     */
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    /**
-     * setter for the isStartNode field
-     * sets the isStartNode field(initialised to false) to true
-     */
-    public void setNodeAsStartNode() {
-        isStartNode = true;
-    }
 
     /**
      * getter for the isStartNode field

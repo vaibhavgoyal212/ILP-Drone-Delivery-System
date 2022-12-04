@@ -5,11 +5,10 @@ public class DroneMove {
     private LngLat position;
     private LngLat parent;
     private Double angle;
-    private long ticksSinceStartOfCalculation = 0;
-    private boolean isStartMove = false;
+    private long ticksSinceStartOfCalculation;
+    private boolean isStartMove;
 
     public DroneMove(Node node){
-        this.orderNo = node.getOrderNo();
         this.position = node.getPosition();
         this.isStartMove = node.isStartNode();
         if(node.getParent() != null){
